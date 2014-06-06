@@ -1,5 +1,5 @@
-# Für Iterationen über Listen sollten Generatoren verwendet werden
-# keyword yield
+## Für Iterationen über Listen sollten Generatoren verwendet werden
+## keyword yield
 In [1]: def multiplier(in_):
    ...:     for elem in in_:
    ...:         yield elem * 2
@@ -10,9 +10,9 @@ In [2]: gen = multiplier([1,2,3,4])
 In [3]: list(gen)
 Out[3]: [2, 4, 6, 8]
 
-# What?
-# for ruft automatisch immer next auf
-# bricht ab wenn eine StopIteration geworfen wird
+## What?
+## for ruft automatisch immer next auf
+## bricht ab wenn eine StopIteration geworfen wird
 In [4]: gen = multiplier([1,2,3,4])
 
 In [5]: next(gen)
@@ -35,8 +35,8 @@ StopIteration                             Traceback (most recent call last)
 
 StopIteration:
 
-# Warum?
-# z.B. Chaining
+## Warum?
+## z.B. Chaining
 In [10]: def adder(in_):
    ....:     for elem in in_:
    ....:         yield elem + 1
@@ -47,7 +47,7 @@ In [11]: gen = adder(multiplier([1,2,3,4]))
 In [12]: list(gen)
 Out[12]: [3, 5, 7, 9]
 
-# oder auch:
+## oder auch:
 In [13]: mul_gen = multiplier([1,2,3,4])
 
 In [14]: gen = adder(mul_gen)
@@ -55,11 +55,44 @@ In [14]: gen = adder(mul_gen)
 In [15]: list(gen)
 Out[15]: [3, 5, 7, 9]
 
-# Die Eingangsliste ist somit nur einmal ganz am Anfang und ggf. einmal ganz
-# am Ende im Speicher.
-#
-# Oft bleibt der code dadurch einfacher
-#
-# Einfache Erweiterbarkeit indem ein weiterer Generator dazwischen geschaltet
-# wird.
+## Die Eingangsliste ist somit nur einmal ganz am Anfang und ggf. einmal ganz
+## am Ende im Speicher.
+##
+## Oft bleibt der code dadurch einfacher
+##
+## Einfache Erweiterbarkeit indem ein weiterer Generator dazwischen geschaltet
+## wird.
 
+## Ein kleiner Geschwindigkeitsvergleich:
+In [1]: def naiv_adder(in_):
+   ...:     ret = []
+   ...:     for elem in in_:
+   ...:         ret.append(elem + 1)
+   ...:     return ret
+   ...:
+
+In [2]: def naiv_multiplier(in_):
+   ...:     ret = []
+   ...:     for elem in in_:
+   ...:         ret.append(elem * 2)
+   ...:     return ret
+   ...:
+
+In [3]: long_list = list(range(10000000))
+
+In [4]: %timeit ret = naiv_adder(naiv_multiplier(long_list))
+1 loops, best of 3: 2.83 s per loop
+
+## Doing it right:
+In [5]: def adder(in_):
+   ...:     for elem in in_:
+   ...:         yield elem + 1
+   ...:
+
+In [6]: def multiplier(in_):
+   ...:     for elem in in_:
+   ...:         yield elem * 2
+   ...:
+
+In [7]: %timeit ret = list(adder(multiplier(long_list)))
+1 loops, best of 3: 1.86 s per loop
