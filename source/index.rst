@@ -23,6 +23,7 @@ Dies ist mein Versuch programmierversierte Personen an die Sprache Python_ heran
    dict_comprehension
    slicing
    writing_scripts
+   modules
    python_workshop
 
 
