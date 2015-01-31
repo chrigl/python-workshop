@@ -13,6 +13,8 @@ Dies ist mein Versuch programmierversierte Personen an die Sprache Python_ heran
 .. toctree::
    :maxdepth: 2
 
+   prestart
+   virtualenv
    ipython
    pitfalls
    python_unicode
@@ -24,6 +26,7 @@ Dies ist mein Versuch programmierversierte Personen an die Sprache Python_ heran
    slicing
    writing_scripts
    modules
+   packaging
    python_workshop
 
 
